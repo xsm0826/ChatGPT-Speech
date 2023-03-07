@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text to Speech</title>
+</head>
+<body>
+<div>
+    <h1>Text to Speech</h1>
+    <textarea id="text" rows="5" cols="50"></textarea>
+    <br>
+    <button onclick="play()">Play</button>
+    <br>
+    <audio id="audio"></audio>
+</div>
+<div>
+    <h1>Speech to Text</h1>
+    <button id="recordButton">start</button>
+    <br>
+    <textarea id="transcription"></textarea>
+</div>
+<script>
+    const recordButton = document.getElementById('recordButton');
+    const transcription = document.getElementById('transcription');
+    let isRecording = false;
+    let recognition = new webkitSpeechRecognition();
+
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recordButton.addEventListener('click', () => {
+        if (isRecording) {
+            recognition.stop();
+            recordButton.innerText = 'start';
+            isRecording = false;
+        } else {
+            recognition.start();
+            recordButton.innerText = 'stop';
+            isRecording = true;
+        }
+    });
+
+    recognition.onresult = (event) => {
+        let interimTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            let transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+                transcription.value += transcript + '\n';
+            } else {
+                interimTranscript += transcript;
+            }
+        }
+    };
+</script>
+<script>
+    function play() {
+        var text = document.getElementById("text").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/text2voice");
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var audioUrl = URL.createObjectURL(xhr.response);
+                var audio = document.getElementById("audio");
+                audio.src = audioUrl;
+                audio.play();
+            }
+        }
+        xhr.responseType = "blob";
+        xhr.send(JSON.stringify({text: text}));
+    }
+</script>
+</body>
+</html>

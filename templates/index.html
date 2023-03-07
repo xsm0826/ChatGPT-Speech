@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRAZY CHATTING...</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            position: fixed;
+            top: 0px;
+            right: 10px;
+            left: 10px;
+            width: 100%;
+            /*padding: 0px;*/
+            box-sizing: border-box;
+            font-size: 24px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div style="position: absolute; right: 20px; top: 0;">
+        <button type="submit" class="shutdown-button" onclick="location.href='/logout'">Log out</button>
+    </div>
+    <div style="top: 0">
+        <h1 class="title">CRAZY CHAT&trade;</h1>
+    </div>
+</div>
+<div class="content" style="padding: 15%">
+    <section class="section">
+        <div class="container">
+            <div class="box" id="chatbox">
+                <p>Welcome to the CRAZY CHAT&trade;. How can I assist you?</p>
+            </div>
+            <p></p>
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" id="usermsg" placeholder="Try your question here..."/>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control" style="text-align: right;">
+                    <button type="submit" class="button is-primary" id="sendmsg">Send</button>
+                </div>
+            </div>
+            <p style="font-size: 14px"><strong style="font-size: 16px">Tips:</strong><br/>Using
+                '<strong>topic:xxx</strong>' format to describe
+                your preferences or chat topic can help find answers faster and more accurately.<br/>Limited to <strong>20
+                    characters</strong>
+                or less. <strong>Only one topic</strong> can be set for an account at the same time.</p>
+        </div>
+    </section>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#sendmsg").click(function () {
+            var usermsg = $("#usermsg").val();
+            $.get("/chat", {msg: usermsg}).done(function (data) {
+                $("#chatbox").append('<div style="background-color: #f5f5f5; margin: 10px; padding: 10px; border-radius: 10px;">');
+                $("#chatbox").append("<p><strong>You:</strong> " + usermsg + "</p>");
+                $("#chatbox").append("<p><strong>C.C:</strong> " + data + "</p></div>");
+                $("#usermsg").val("");
+            });
+        });
+    });
+</script>
+<div class="footer">
+    <p>Tools: <a href="/voice">text&voice</a> | <a href="/test_page">test_page</a></p>
+    <p>
+        <a href="#">CRAZY CHAT&trade;</a> | <a href="https://platform.openai.com/docs/usage-policies/disallowed-usage">Free
+        Research Preview. Use according to Law & Publication Policy.</a> | <a href="/connect">Chat with us</a>
+    </p>
+</div>
+</body>
+</html>

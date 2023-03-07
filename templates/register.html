@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRAZY CHAT: Sign up</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            position: fixed;
+            top: 0px;
+            right: 10px;
+            left: 10px;
+            width: 100%;
+            /*padding: 0px;*/
+            box-sizing: border-box;
+            font-size: 24px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div style="top: 0">
+        <h1 class="title">CRAZY CHAT&trade;</h1>
+    </div>
+</div>
+<div class="content">
+    <section class="section">
+        <div class="container" style="width: 40%;">
+            <h3 class="title" style="text-align: center;">Create your account</h3>
+            <form action="/register" method="post" class="box">
+                <div><p>Welcome to the CRAZY CHAT&trade;. <br/></p></div>
+                <p></p>
+                <div class="field">
+                    <label for="email">Email:</label>
+                    <input class="input" type="email" id="email" name="email" required
+                           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"><br><br>
+                </div>
+                <div class="field">
+                    <label for="password">Password:</label>
+                    <input class="input" type="password" id="password" name="password" minlength="8" required
+                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,}"><br><br>
+                </div>
+                <div style="text-align: center;">
+                    <button type="submit" class="button is-primary">Submit</button>
+                </div>
+                <p style="text-align: center;">Already have an account?<a href="/login">Log in</a></p>
+            </form>
+            <p>Password must be at least 8 characters long and include at least one uppercase letter, one lowercase
+                letter, one number, and one special character.</p>
+            <div class="alert-warning" style="text-align: center;">
+                {% if error %}
+                <span style="color: red">{{ error }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+<div class="footer">
+    <p>
+        <a href="#">CRAZY CHAT&trade;</a> | <a href="https://platform.openai.com/docs/usage-policies/disallowed-usage">Free
+        Research Preview. Use according to Law & Publication Policy.</a> | <a href="/connect">Chat with us</a>
+    </p>
+</div>
+</body>
+</html>

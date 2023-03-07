@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text</title>
+</head>
+
+<body>
+<h1>Speech to Text</h1>
+<button id="record-btn">Start Recording</button>
+<br>
+<textarea id="transcription" rows="10" cols="50" placeholder="Transcription"></textarea>
+
+<script>
+    let recording = false;
+    let mediaRecorder;
+    let chunks = [];
+
+    async function startRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.addEventListener('dataavailable', event => {
+                chunks.push(event.data);
+            });
+            mediaRecorder.addEventListener('stop', async () => {
+                const blob = new Blob(chunks, {type: 'audio/wav'});
+                const transcription = await sendAudioToServer(blob);
+                document.getElementById('transcription').value = transcription;
+                chunks = [];
+            });
+            mediaRecorder.start();
+            recording = true;
+            document.getElementById('record-btn').textContent = 'Stop Recording';
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function stopRecording() {
+        if (!recording) {
+            return;
+        }
+        mediaRecorder.stop();
+        recording = false;
+        document.getElementById('record-btn').textContent = 'Start Recording';
+    }
+
+    async function sendAudioToServer(blob) {
+        const formData = new FormData();
+        formData.append('audio', blob, 'recording.wav');
+
+        try {
+            const response = await fetch('/api/transcription', {
+                method: 'POST',
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+            const data = await response.json();
+            return data.transcription;
+        } catch (error) {
+            console.error('Error:', error);
+            return '';
+        }
+    }
+
+    document.getElementById('record-btn').addEventListener('click', event => {
+        event.preventDefault();
+        if (recording) {
+            stopRecording();
+        } else {
+            startRecording();
+        }
+    });
+</script>
+</body>
+
+</html>
