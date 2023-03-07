@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-# @Project ：ChatGPT-Speech111
+# @Project ：ChatGPT-Speech
 # @File ：app.py
 # @Author ：XSM
 # @Date ：2023/3/3 23:43
 import hashlib
+import os
 
 import markdown
 from flask import Flask, render_template, request, session, redirect, url_for, send_from_directory
@@ -11,9 +12,9 @@ from flask import Flask, render_template, request, session, redirect, url_for, s
 from api.chat import api_chat
 from api.voice import api_voice
 from db import find_user, create_user
-from server.chatgpt import chatgpt, set_topic
 
 app = Flask('CRAZY_GPT')
+app.secret_key = os.environ.get('crazy_gpt_key')
 app.secret_key = "mysecretkey"
 
 

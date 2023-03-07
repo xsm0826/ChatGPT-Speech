@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# @Project ：ChatGPT-Speech111
-# @File ：ChatGPT-Speech111.py
+# @Project ：ChatGPT-Speech
+# @File ：ChatGPT-Speech.py
 # @Author ：XSM
 # @Date ：2023/3/3 21:40
 import os

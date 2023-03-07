@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Project ：ChatGPT-Speech111
+# @Project ：ChatGPT-Speech
 # @File ：__init__.py.py
 # @Author ：XSM
 # @Date ：2023/3/4 10:51
@@ -8,7 +8,7 @@ import pandas as pd
 
 from server import logger
 
-file_db = r'/\db\chatgpt.db'
+file_db = r'.\db\chatgpt.db'
 
 
 def create_tables():
